@@ -116,17 +116,17 @@ namespace NavigationMenuSample.Controls
         /// <param name="e"></param>
         protected override void OnKeyDown(KeyRoutedEventArgs e)
         {
-        var focusedItem = FocusManager.GetFocusedElement();
+            var focusedItem = FocusManager.GetFocusedElement();
 
             switch (e.Key)
             {
                 case VirtualKey.Up:
-                    this.TryMoveFocus(FocusNavigationDirection.Up);
+                    FocusManager.TryMoveFocus(FocusNavigationDirection.Up);
                     e.Handled = true;
                     break;
 
                 case VirtualKey.Down:
-                    this.TryMoveFocus(FocusNavigationDirection.Down);
+                    FocusManager.TryMoveFocus(FocusNavigationDirection.Down);
                     e.Handled = true;
                     break;
 
@@ -145,22 +145,22 @@ namespace NavigationMenuSample.Controls
                         {
                             if (onlastitem)
                             {
-                                this.TryMoveFocus(FocusNavigationDirection.Next);
+                                FocusManager.TryMoveFocus(FocusNavigationDirection.Next);
                             }
                             else
                             {
-                                this.TryMoveFocus(FocusNavigationDirection.Down);
+                                FocusManager.TryMoveFocus(FocusNavigationDirection.Down);
                             }
                         }
                         else // Shift + Tab
                         {
                             if (onfirstitem)
                             {
-                                this.TryMoveFocus(FocusNavigationDirection.Previous);
+                                FocusManager.TryMoveFocus(FocusNavigationDirection.Previous);
                             }
                             else
                             {
-                                this.TryMoveFocus(FocusNavigationDirection.Up);
+                                FocusManager.TryMoveFocus(FocusNavigationDirection.Up);
                             }
                         }
                     }
@@ -168,11 +168,11 @@ namespace NavigationMenuSample.Controls
                     {
                         if (!shiftKeyDown)
                         {
-                            this.TryMoveFocus(FocusNavigationDirection.Down);
+                            FocusManager.TryMoveFocus(FocusNavigationDirection.Down);
                         }
                         else // Shift + Tab
                         {
-                            this.TryMoveFocus(FocusNavigationDirection.Up);
+                            FocusManager.TryMoveFocus(FocusNavigationDirection.Up);
                         }
                     }
 
@@ -189,26 +189,6 @@ namespace NavigationMenuSample.Controls
                 default:
                     base.OnKeyDown(e);
                     break;
-            }
-        }
-
-        /// <summary>
-        /// This method is a work-around until the bug in FocusManager.TryMoveFocus is fixed.
-        /// </summary>
-        /// <param name="direction"></param>
-        private void TryMoveFocus(FocusNavigationDirection direction)
-        {
-            if (direction == FocusNavigationDirection.Next || direction == FocusNavigationDirection.Previous)
-            {
-                FocusManager.TryMoveFocus(direction);
-            }
-            else
-            {
-                var control = FocusManager.FindNextFocusableElement(direction) as Control;
-                if (control != null)
-                {
-                    control.Focus(FocusState.Programmatic);
-                }
             }
         }
 
